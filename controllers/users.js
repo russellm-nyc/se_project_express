@@ -64,13 +64,13 @@ const updateCurrentUser = (req, res) => {
 
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
-  User.findOne({ email }).then((user) => {
-    if (user) {
+  User.findOne({ email }).then((foundUser) => {
+    if (foundUser) {
       return res
         .status(CONFLICT_ERROR_CODE)
         .send({ message: "Email already exists" });
     }
-    bcrypt
+    return bcrypt
       .hash(password, 10)
       .then((hash) =>
         User.create({
