@@ -64,37 +64,43 @@ const updateCurrentUser = (req, res) => {
 
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
-
-  bcrypt
-    .hash(password, 10)
-    .then((hash) =>
-      User.create({
-        name,
-        avatar,
-        email,
-        password: hash,
+  User.findOne({ email }).then((user) => {
+    if (user) {
+      return res
+        .status(CONFLICT_ERROR_CODE)
+        .send({ message: "Email already exists" });
+    }
+    bcrypt
+      .hash(password, 10)
+      .then((hash) =>
+        User.create({
+          name,
+          avatar,
+          email,
+          password: hash,
+        })
+      )
+      .then((user) => {
+        res.status(201).send({
+          _id: user._id,
+          name: user.name,
+          avatar: user.avatar,
+          email: user.email,
+        });
       })
-    )
-    .then((user) => {
-      res.status(201).send({
-        _id: user._id,
-        name: user.name,
-        avatar: user.avatar,
-        email: user.email,
+      .catch((err) => {
+        console.error(err);
+        if (err.code === 11000) {
+          return res
+            .status(CONFLICT_ERROR_CODE)
+            .send({ message: "Email already exists" });
+        }
+        if (err.name === "ValidationError") {
+          return res.status(BAD_REQUEST).send({ message: err.message });
+        }
+        return res.status(INTERNAL_SERVER_ERROR).send({ message: err.message });
       });
-    })
-    .catch((err) => {
-      console.error(err);
-      if (err.code === 11000) {
-        return res
-          .status(CONFLICT_ERROR_CODE)
-          .send({ message: "Email already exists" });
-      }
-      if (err.name === "ValidationError") {
-        return res.status(BAD_REQUEST).send({ message: err.message });
-      }
-      return res.status(INTERNAL_SERVER_ERROR).send({ message: err.message });
-    });
+  });
 };
 
 const login = (req, res) => {
