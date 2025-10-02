@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 const mainRouter = require("./routes");
 const auth = require("./middlewares/auth");
 
@@ -8,7 +9,6 @@ const { PORT = 3001 } = process.env;
 
 const { login, createUser } = require("./controllers/users");
 const { getItems } = require("./controllers/clothingItems");
-const cors = require("cors");
 
 app.use(cors());
 // Connect to MongoDB

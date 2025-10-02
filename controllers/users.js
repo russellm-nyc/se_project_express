@@ -4,6 +4,7 @@ const {
   BAD_REQUEST,
   UNAUTHORIZED,
   NOT_FOUND,
+  CONFLICT_ERROR_CODE,
   INTERNAL_SERVER_ERROR,
 } = require("../utils/errors");
 const User = require("../models/user");
