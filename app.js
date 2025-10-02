@@ -1,23 +1,39 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const mainRouter = require("./routes");
+const auth = require("./middlewares/auth");
 
 const app = express();
 const { PORT = 3001 } = process.env;
 
+const { login, createUser } = require("./controllers/users");
+const { getItems } = require("./controllers/clothingItems");
+const cors = require("cors");
+
+app.use(cors());
+// Connect to MongoDB
 mongoose
   .connect("mongodb://127.0.0.1:27017/wtwr_db")
-  .then(() => {})
-  .catch(console.error);
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((err) => {
+    console.error("MongoDB connection error:", err);
+  });
 
+// Global middleware
 app.use(express.json());
-app.use((req, res, next) => {
-  req.user = {
-    _id: "5d8b8592978f8bd833ca8133", // paste the _id of the test user created in the previous step
-  };
-  next();
-});
 
+// Sign up new users / Sign in existing users
+app.post("/signup", createUser);
+app.post("/signin", login);
+app.get("/items", getItems);
+
+// Protected Routes
+app.use(auth);
 app.use("/", mainRouter);
 
-app.listen(PORT, () => {});
+// Start server
+app.listen(PORT, () => {
+  console.log(`http://localhost:${PORT}`);
+});
