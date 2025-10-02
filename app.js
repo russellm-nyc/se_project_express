@@ -14,9 +14,7 @@ app.use(cors());
 // Connect to MongoDB
 mongoose
   .connect("mongodb://127.0.0.1:27017/wtwr_db")
-  .then(() => {
-    console.log("Connected to MongoDB");
-  })
+  .then(() => {})
   .catch((err) => {
     console.error("MongoDB connection error:", err);
   });
@@ -34,6 +32,4 @@ app.use(auth);
 app.use("/", mainRouter);
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`http://localhost:${PORT}`);
-});
+app.listen(PORT, () => {});
