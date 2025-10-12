@@ -12,4 +12,4 @@ node_modules
 # System files and IDE settings folders
 .DS_Store
 .idea
-.vscode
+.vscodec
