@@ -1,3 +1,7 @@
-const JWT_SECRET = "secret";
+// This loads the .env file into the project
 
-module.exports = { JWT_SECRET };
+const JWT_SECRET = process.env.JWT_SECRET || "secret-value-to-avoid-errors";
+
+module.exports = {
+  JWT_SECRET,
+};
