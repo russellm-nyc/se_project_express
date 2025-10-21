@@ -1,2 +1,12 @@
+user: russell
+external: 34.73.248.58
+subdomain: russellm-wtwr
+domain: ignorelist.com
+
+
+
+
+FIRST TRY:
 USER: russell
 EXTERNAL: 34.75.10.243
+SUBDOMAIN:  russellm-wtwr

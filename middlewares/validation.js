@@ -48,3 +48,13 @@ module.exports.validateUserId = celebrate({
     userId: Joi.string().hex().length(24).required(),
   }),
 });
+
+module.exports.validateProfileUpdate = celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().required().min(2).max(30),
+    avatar: Joi.string().required().custom(validateURL).messages({
+      "string.empty": 'The "avatar" field must be filled in',
+      "string.uri": 'The "avatar" field must be a valid url',
+    }),
+  }),
+});
