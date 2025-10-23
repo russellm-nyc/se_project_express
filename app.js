@@ -27,6 +27,12 @@ mongoose
 app.use(express.json());
 app.use(requestLogger);
 
+app.get("/crash-test", () => {
+  setTimeout(() => {
+    throw new Error("Server will crash now");
+  }, 0);
+});
+
 // Sign up new users / Sign in existing users
 app.post("/signup", createUser);
 app.post("/signin", login);
